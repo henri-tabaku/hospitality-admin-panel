@@ -1,19 +1,34 @@
 import prisma from '@/lib/prisma'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
 
 export default async function Home() {
   const users = await prisma.user.findMany()
   return (
-    <div className='-mt-16 flex min-h-screen flex-col items-center justify-center bg-gray-50'>
-      <h1 className='mb-8 font-[family-name:var(--font-geist-sans)] text-4xl font-bold text-[#333333]'>
-        Superblog
-      </h1>
-      <ol className='list-inside list-decimal font-[family-name:var(--font-geist-sans)]'>
+    <main>
+      <div className='grid grid-cols-3 gap-8'>
         {users.map(user => (
-          <li key={user.id} className='mb-2'>
-            {user.email}
-          </li>
+          <Card key={user.id} className='flex flex-col justify-between'>
+            <CardHeader className='flex flex-row items-center gap-4'>
+                <CardTitle>{user.email}</CardTitle>
+                <CardDescription>{user.role}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className='truncate'>{user.password}</p>
+            </CardContent>
+            <CardFooter className='flex justify-between'>
+              <p>Button</p>
+              <p>Button2</p>
+            </CardFooter>
+          </Card>
         ))}
-      </ol>
-    </div>
+      </div>
+    </main>
   )
 }
