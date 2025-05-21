@@ -11,11 +11,34 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { formatDistanceToNow } from 'date-fns'
 import { getOrders } from './actions'
+import OrdersLoading from './loading'
+import { useOrderStore } from '@/app/state/OrderStore'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
+import { useMutation } from '@tanstack/react-query'
+import { updateOrderStatus } from './actions'
+import { Order, OrderStatus } from '@/app/types/Order'
+import { getQueryClient } from '@/app/get-query-client'
 
 export default function Orders() {
-  const { data } = useQuery({
-    queryKey: ['orders'],
-    queryFn: getOrders
+  const { filters } = useOrderStore();
+    const queryClient = getQueryClient()
+  
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ orderId, status }: { orderId: number, status: Order['status'] }) => 
+      updateOrderStatus(orderId, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['orders'] })
+    }
+  })
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ['orders', filters ],
+    queryFn: () => getOrders(filters)
   })
 
   const calculateOrderTotal = (items: any) => {
@@ -23,6 +46,16 @@ export default function Orders() {
       (total: any, item: any) => total + item.menuItem.price * item.quantity,
       0
     )
+  }
+
+  if (isPending) {
+    return (
+      <OrdersLoading />
+    )
+  }
+
+  if (error) {
+    return <div>Error loading orders</div>
   }
 
   return (
@@ -71,12 +104,39 @@ export default function Orders() {
             </div>
           </CardContent>
           <CardFooter className='flex justify-between'>
-            <button className='rounded-md bg-blue-100 px-3 py-1 text-sm text-blue-800 hover:bg-blue-200'>
-              Update Status
-            </button>
-            <button className='rounded-md bg-red-100 px-3 py-1 text-sm text-red-800 hover:bg-red-200'>
-              Cancel Order
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className='rounded-md bg-blue-100 px-3 py-1 text-sm text-blue-800 hover:bg-blue-200'>
+                  Update Status
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={() => updateStatusMutation.mutate({ 
+                    orderId: order.id, 
+                    status: OrderStatus.PENDING 
+                  })}
+                >
+                  Mark as Pending
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => updateStatusMutation.mutate({ 
+                    orderId: order.id, 
+                    status: OrderStatus.PREPARING 
+                  })}
+                >
+                  Mark as Preparing
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => updateStatusMutation.mutate({ 
+                    orderId: order.id, 
+                    status: OrderStatus.SERVED 
+                  })}
+                >
+                  Mark as Served
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </CardFooter>
         </Card>
       ))}

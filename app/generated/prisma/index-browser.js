@@ -170,8 +170,7 @@ exports.Role = exports.$Enums.Role = {
 exports.OrderStatus = exports.$Enums.OrderStatus = {
   PENDING: 'PENDING',
   PREPARING: 'PREPARING',
-  SERVED: 'SERVED',
-  CANCELLED: 'CANCELLED'
+  SERVED: 'SERVED'
 };
 
 exports.Prisma.ModelName = {
