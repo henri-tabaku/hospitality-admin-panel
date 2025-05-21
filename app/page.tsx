@@ -13,10 +13,10 @@ export default async function Home() {
   return (
     <main>
       <div className='grid grid-cols-3 gap-8'>
-        {users.map(user => (
+        {users.map(user => 
           <Card key={user.id} className='flex flex-col justify-between'>
             <CardHeader className='flex flex-row items-center gap-4'>
-                <CardTitle>{user.email}</CardTitle>
+                <CardTitle>{user.email} - 1</CardTitle>
                 <CardDescription>{user.role}</CardDescription>
             </CardHeader>
             <CardContent>
@@ -27,7 +27,7 @@ export default async function Home() {
               <p>Button2</p>
             </CardFooter>
           </Card>
-        ))}
+        )}
       </div>
     </main>
   )
