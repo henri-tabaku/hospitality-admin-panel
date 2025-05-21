@@ -32,11 +32,33 @@ export async function createCategory(name: string) {
 
 export async function deleteCategory(categoryId: number) {
   try {
+    // First check if category has any menu items
+    const category = await prisma.category.findFirst({
+      where: { id: categoryId },
+      include: {
+        _count: {
+          select: { menuItems: true }
+        }
+      }
+    })
+
+    if (!category) {
+      throw new Error('Category not found')
+    }
+
+    if (category._count.menuItems > 0) {
+      throw new Error('Cannot delete category that has menu items')
+    }
+
+    // If no menu items, proceed with deletion
     await prisma.category.delete({
       where: { id: categoryId }
     })
     return true
   } catch (error) {
+    if (error instanceof Error) {
+      throw error
+    }
     throw new Error('Failed to delete category')
   }
 }
