@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import LimitFilter from './LimitFilter'
-import Orders from './Orders'
 import StatusFilter from './StatusFilter'
 import { Plus } from 'lucide-react'
+import OrdersList from './OrdersList'
 
 export default function OrdersPage() {
   return (
@@ -12,12 +12,12 @@ export default function OrdersPage() {
           <StatusFilter />
           <LimitFilter />
         </div>
-        <Link href={'/addOrder'} className='flex items-center rounded-md bg-blue-500 px-4 py-2 text-white'>
+        <Link href={'/orders/add'} className='flex items-center rounded-md bg-blue-500 px-4 py-2 text-white'>
           <Plus className='mr-2 h-4 w-4' />
           Add Order
         </Link>
       </div>
-      <Orders />
+      <OrdersList />
     </>
   )
 }

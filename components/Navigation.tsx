@@ -15,7 +15,7 @@ export default function Navigation() {
           <NavigationMenuList className="w-full justify-start gap-6">
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/menu-items">Menu Items</Link>
+                <Link href="/menuItems">Menu Items</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 

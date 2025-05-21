@@ -24,7 +24,7 @@ import { updateOrderStatus } from './actions'
 import { Order, OrderStatus } from '@/app/types/Order'
 import { getQueryClient } from '@/app/get-query-client'
 
-export default function Orders() {
+export default function OrdersList() {
   const { filters } = useOrderStore();
     const queryClient = getQueryClient()
   

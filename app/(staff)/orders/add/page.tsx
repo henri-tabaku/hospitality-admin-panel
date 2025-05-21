@@ -17,9 +17,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useQuery, useMutation } from "@tanstack/react-query"
-import { createOrder, getMenuItems } from "./actions"
 import { useRouter } from "next/navigation"
 import { useAddOrderStore } from "@/app/state/AddOrderStore"
+import { createOrder, getMenuItems } from "../actions"
 
 export default function AddOrderPage() {
     const router = useRouter()
