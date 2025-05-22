@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import {
   Table,
   TableBody,
@@ -62,7 +63,16 @@ export default function CategoryList() {
             <TableRow key={category.id}>
               <TableCell>{category.name}</TableCell>
               <TableCell>{category._count.menuItems}</TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-right space-x-2">
+                <Link href={`/categories/${category.id}`}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mr-2"
+                  >
+                    Edit
+                  </Button>
+                </Link>
                 <Button
                   variant="destructive"
                   size="sm"

@@ -68,3 +68,36 @@ export async function deleteMenuItem(menuItemId: number) {
     throw new Error('Failed to delete menu item')
   }
 }
+
+export async function getMenuItem(id: number) {
+  try {
+    const menuItem = await prisma.menuItem.findUnique({
+      where: { id }
+    })
+    
+    if (!menuItem) {
+      throw new Error('Menu item not found')
+    }
+    
+    return menuItem
+  } catch (error) {
+    throw new Error('Failed to fetch menu item')
+  }
+}
+
+export async function updateMenuItem(id: number, data: {
+  name: string
+  price: number
+  available: boolean
+  categoryId: number
+}) {
+  try {
+    const menuItem = await prisma.menuItem.update({
+      where: { id },
+      data
+    })
+    return menuItem
+  } catch (error) {
+    throw new Error('Failed to update menu item')
+  }
+}

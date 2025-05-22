@@ -1,5 +1,6 @@
 'use client'
 
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -56,9 +57,18 @@ export default function MenuItemList() {
             <TableRow key={item.id}>
               <TableCell>{item.name}</TableCell>
               <TableCell>${item.price.toFixed(2)}</TableCell>
-              <TableCell>{item.category.name}</TableCell>
+              <TableCell>{item.category?.name}</TableCell>
               <TableCell>{item.available ? 'Yes' : 'No'}</TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-right space-x-2">
+                <Link href={`/menuItems/${item.id}`}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mr-2"
+                  >
+                    Edit
+                  </Button>
+                </Link>
                 <Button
                   variant="destructive"
                   size="sm"

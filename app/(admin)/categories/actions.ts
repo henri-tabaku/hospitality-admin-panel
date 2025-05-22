@@ -62,3 +62,31 @@ export async function deleteCategory(categoryId: number) {
     throw new Error('Failed to delete category')
   }
 }
+
+export async function getCategory(id: number) {
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id }
+    })
+    
+    if (!category) {
+      throw new Error('Category not found')
+    }
+    
+    return category
+  } catch (error) {
+    throw new Error('Failed to fetch category')
+  }
+}
+
+export async function updateCategory(id: number, data: { name: string }) {
+  try {
+    const category = await prisma.category.update({
+      where: { id },
+      data
+    })
+    return category
+  } catch (error) {
+    throw new Error('Failed to update category')
+  }
+}
