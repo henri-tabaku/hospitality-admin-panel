@@ -1,33 +1,30 @@
 'use client'
 
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
-import { deleteCategory, getCategories } from "./actions"
-import { useCategoryStore } from "@/app/state/CategoryStore"
-import CategoriesLoading from "./loading"
-
-type Category = {
-  id: number
-  name: string
-  _count: {
-    menuItems: number
-  }
-}
+  TableRow
+} from '@/components/ui/table'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { deleteCategory, getCategories } from './actions'
+import { useCategoryStore } from '@/app/state/CategoryStore'
+import CategoriesLoading from './loading'
+import { getQueryClient } from '@/app/get-query-client'
 
 export default function CategoryList() {
-  const queryClient = useQueryClient()
-  const filters = useCategoryStore((state) => state.filters)
+  const queryClient = getQueryClient()
+  const { filters } = useCategoryStore()
 
-  const { data: categories, error, isLoading } = useQuery({
+  const {
+    data: categories,
+    error,
+    isLoading
+  } = useQuery({
     queryKey: ['categories', filters],
     queryFn: () => getCategories(filters)
   })
@@ -46,36 +43,32 @@ export default function CategoryList() {
   }
 
   if (isLoading) return <CategoriesLoading />
-  if (error) return <div className="text-red-500">Error loading categories</div>
+  if (error) return <div className='text-red-500'>Error loading categories</div>
 
   return (
-    <div className="rounded-md border">
+    <div className='rounded-md border'>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead>Menu Items</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className='text-right'>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categories?.map((category) => (
+          {categories?.map(category => (
             <TableRow key={category.id}>
               <TableCell>{category.name}</TableCell>
               <TableCell>{category._count.menuItems}</TableCell>
-              <TableCell className="text-right space-x-2">
+              <TableCell className='space-x-2 text-right'>
                 <Link href={`/categories/${category.id}`}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mr-2"
-                  >
+                  <Button variant='outline' size='sm' className='mr-2'>
                     Edit
                   </Button>
                 </Link>
                 <Button
-                  variant="destructive"
-                  size="sm"
+                  variant='destructive'
+                  size='sm'
                   onClick={() => handleDelete(category.id)}
                   disabled={deleteMutation.isPending}
                 >

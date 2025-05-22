@@ -11,11 +11,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { createCategory } from "../actions"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
+import { getQueryClient } from "@/app/get-query-client"
 
 export default function CategoryForm() {
   const router = useRouter()
-  const queryClient = useQueryClient()
+  const queryClient = getQueryClient()
 
   const createMutation = useMutation({
     mutationFn: (name: string) => createCategory(name),

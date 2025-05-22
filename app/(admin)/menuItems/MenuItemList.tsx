@@ -10,14 +10,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { deleteMenuItem, getMenuItems } from "./actions"
 import { useMenuItemStore } from "@/app/state/MenuItemStore"
 import MenuItemsLoading from "./loading"
+import { getQueryClient } from "@/app/get-query-client"
 
 export default function MenuItemList() {
-  const queryClient = useQueryClient()
-  const filters = useMenuItemStore((state) => state.filters)
+  const queryClient = getQueryClient()
+  const {filters} = useMenuItemStore()
 
   const { data: menuItems, error, isLoading } = useQuery({
     queryKey: ['menuItems', filters],

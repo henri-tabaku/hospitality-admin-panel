@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { updateCategory } from '../actions'
+import { getQueryClient } from '@/app/get-query-client'
 
 type CategoryFormProps = {
   category: {
@@ -22,7 +23,7 @@ type CategoryFormProps = {
 
 export default function CategoryForm({ category }: CategoryFormProps) {
   const router = useRouter()
-  const queryClient = useQueryClient()
+  const queryClient = getQueryClient()
 
   const updateMutation = useMutation({
     mutationFn: (name: string) => updateCategory(category.id, { name }),

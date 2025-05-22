@@ -19,12 +19,13 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { useRouter } from "next/navigation"
 import { createMenuItem } from "../actions"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { getCategories } from "../../categories/actions"
+import { getQueryClient } from "@/app/get-query-client"
 
 export default function MenuItemForm() {
   const router = useRouter()
-  const queryClient = useQueryClient()
+  const queryClient = getQueryClient()
 
   const { data: categories } = useQuery({
     queryKey: ['categories'],

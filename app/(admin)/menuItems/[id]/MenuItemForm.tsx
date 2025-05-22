@@ -18,8 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { updateMenuItem } from '../actions'
+import { getQueryClient } from '@/app/get-query-client'
 
 type MenuItemFormProps = {
   menuItem: {
@@ -37,7 +38,7 @@ type MenuItemFormProps = {
 
 export default function MenuItemForm({ menuItem, categories }: MenuItemFormProps) {
   const router = useRouter()
-  const queryClient = useQueryClient()
+  const queryClient = getQueryClient()
 
   const updateMutation = useMutation({
     mutationFn: (formData: typeof menuItem) => updateMenuItem(menuItem.id, formData),
